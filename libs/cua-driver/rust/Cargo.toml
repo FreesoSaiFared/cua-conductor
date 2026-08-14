@@ -2,6 +2,8 @@
 resolver = "2"
 members = [
     "crates/cua-driver",
+    "crates/cua-conductor",
+    "crates/cua-warning-overlay",
     "crates/cua-driver-contract",
     "crates/cua-driver-sdk",
     "crates/cua-driver-bindgen",
