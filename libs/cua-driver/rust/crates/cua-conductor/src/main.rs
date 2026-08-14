@@ -129,7 +129,10 @@ fn read_config() -> Result<Config> {
             path.display()
         )
     })?;
-    serde_json::from_str(&text).context("parse conductor config")
+    parse_config_text(&text)
+}
+fn parse_config_text(text: &str) -> Result<Config> {
+    serde_json::from_str(text.trim_start_matches('\u{feff}')).context("parse conductor config")
 }
 
 fn write_config(cfg: &Config) -> Result<()> {
@@ -496,6 +499,14 @@ mod tests {
         assert_eq!(cfg.automations.len(), 1);
         assert_eq!(cfg.automations[0].id, "visible-test");
         assert_eq!(cfg.automations[0].exclusive_group, "foreground-gui");
+    }
+
+    #[test]
+    fn config_parser_accepts_utf8_bom() {
+        let cfg = sample_config();
+        let encoded = format!("\u{feff}{}", serde_json::to_string(&cfg).unwrap());
+        let decoded = parse_config_text(&encoded).unwrap();
+        assert_eq!(decoded.automations[0].id, "visible-test");
     }
 
     #[test]
