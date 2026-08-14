@@ -1,0 +1,24 @@
+{
+  "overlay": {
+    "enabled": true,
+    "flash_enabled": true
+  },
+  "automations": [
+    {
+      "id": "chrome-cua",
+      "command": "cua-driver",
+      "args": ["mcp"],
+      "kind": "cua",
+      "target_hint": "Google Chrome",
+      "exclusive_group": "foreground-gui"
+    },
+    {
+      "id": "publish-site",
+      "command": "powershell",
+      "args": ["-File", "C:/automation/publish.ps1"],
+      "kind": "shell",
+      "target_hint": "Cloudflare publish",
+      "exclusive_group": "background"
+    }
+  ]
+}
